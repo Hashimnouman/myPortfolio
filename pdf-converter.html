@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusPDF - Advanced File Converter</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f0f2ff;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --gray: #94a3b8;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            max-width: 1200px;
+            margin: 0 auto;
+            transition: var(--transition);
+        }
+
+        .glass-card:hover {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tabs {
+            display: flex;
+            background-color: var(--light);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab {
+            padding: 1.2rem 2rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray);
+            transition: var(--transition);
+            position: relative;
+            text-align: center;
+            flex: 1;
+        }
+
+        .tab:hover {
+            color: var(--primary);
+            background-color: rgba(99, 102, 241, 0.05);
+        }
+
+        .tab.active {
+            color: var(--primary-dark);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: var(--primary-dark);
+            border-radius: 3px 3px 0 0;
+            animation: tabUnderline 0.3s ease-out;
+        }
+
+        @keyframes tabUnderline {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+
+        .tab-icon {
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .upload-card {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+            cursor: pointer;
+            background-color: var(--light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-card:hover {
+            border-color: var(--primary);
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .upload-card.dragover {
+            border-color: var(--primary);
+            background-color: var(--secondary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+        }
+
+        .upload-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .upload-text {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .upload-text strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .btn {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 2px 5px rgba(99, 102, 241, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0) 45%,
+                rgba(255, 255, 255, 0.3) 48%,
+                rgba(255, 255, 255, 0.3) 52%,
+                rgba(255, 255, 255, 0) 55%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            animation: shine 3s infinite linear;
+            opacity: 0;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(30deg) translate(-30%, -30%); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: rotate(30deg) translate(30%, 30%); opacity: 0; }
+        }
+
+        .file-list {
+            margin-top: 1.5rem;
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            transition: var(--transition);
+            background-color: white;
+        }
+
+        .file-item:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .file-item.converting {
+            border-left: 4px solid var(--warning);
+        }
+
+        .file-item.completed {
+            border-left: 4px solid var(--success);
+        }
+
+        .file-icon {
+            margin-right: 1.2rem;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .file-info {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .file-name {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-size {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background-color: var(--border);
+            border-radius: 3px;
+            margin-top: 0.8rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 3px;
+        }
+
+        .file-status {
+            margin-left: 1.5rem;
+            font-size: 0.85rem;
+            min-width: 90px;
+            text-align: center;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .file-status.ready {
+            color: var(--gray);
+        }
+
+        .file-status.converting {
+            color: var(--warning);
+        }
+
+        .file-status.completed {
+            color: var(--success);
+        }
+
+        .file-actions {
+            margin-left: 1.5rem;
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .download-btn {
+            background: linear-gradient(to right, var(--success), #0d9c6e);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(16, 185, 129, 0.3);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+
+        .remove-btn:hover {
+            color: var(--error);
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .clear-btn {
+            background: none;
+            color: var(--error);
+            border: 1px solid var(--error);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .clear-btn:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .clear-btn:active {
+            transform: translateY(0);
+        }
+
+        .convert-btn {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .convert-spinner {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: none;
+        }
+
+        .convert-btn.converting .convert-spinner {
+            display: block;
+        }
+
+        .spinner {
+            width: 1.2rem;
+            height: 1.2rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--border);
+        }
+
+        .batch-options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-card {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option-card:hover {
+            border-color: var(--primary);
+            background-color: var(--secondary);
+        }
+
+        .option-card.active {
+            border-color: var(--primary);
+            background-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        .option-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .option-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-desc {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab {
+                flex: 1 1 50%;
+                padding: 1rem 0.5rem;
+                font-size: 0.85rem;
+            }
+
+            .tab-icon {
+                display: block;
+                margin: 0 auto 0.3rem;
+                font-size: 1.3rem;
+            }
+
+            .tab-content {
+                padding: 1.5rem;
+            }
+
+            .upload-card {
+                padding: 2rem 1rem;
+            }
+
+            .file-item {
+                flex-wrap: wrap;
+                padding: 1rem;
+            }
+
+            .file-info {
+                flex-basis: 100%;
+                margin-bottom: 1rem;
+            }
+
+            .file-status, .file-actions {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+
+            .actions {
+                flex-direction: column-reverse;
+                gap: 1rem;
+            }
+
+            .clear-btn, .convert-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .batch-options {
+                flex-direction: column;
+            }
+        }
+
+        /* Modern scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--border);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+    <div class="glass-card">
+        <header>
+            <h1>NexusPDF Converter</h1>
+            <p class="subtitle">Convert your PDFs with high quality and blazing speed</p>
+        </header>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="png">
+                <span class="tab-icon">🖼️</span>
+                PDF to PNG
+            </div>
+            <div class="tab" data-tab="jpg">
+                <span class="tab-icon">📷</span>
+                PDF to JPG
+            </div>
+            <div class="tab" data-tab="docx">
+                <span class="tab-icon">📝</span>
+                PDF to Word
+            </div>
+            <div class="tab" data-tab="txt">
+                <span class="tab-icon">📄</span>
+                PDF to Text
+            </div>
+        </div>
+
+        <div class="tab-content active" id="png-tab">
+            <div class="upload-card" id="png-upload">
+                <div class="upload-icon">📤</div>
+                <div class="upload-text"><strong>Drag & drop</strong> your PDF files here or</div>
+                <button class="btn">
+                    <span class="convert-spinner spinner"></span>
+                    Browse Files
+                </button>
+                <input type="file" class="file-input" id="png-input" accept=".pdf" multiple>
+            </div>
+
+            <div class="batch-options">
+                <div class="option-card active" data-option="single">
+                    <div class="option-icon">1️⃣</div>
+                    <div class="option-title">Single Pages</div>
+                    <div class="option-desc">Each page as separate image</div>
+                </div>
+                <div class="option-card" data-option="merged">
+                    <div class="option-icon">🧩</div>
+                    <div class="option-title">Merged</div>
+                    <div class="option-desc">All pages in one image</div>
+                </div>
+                <div class="option-card" data-option="custom">
+                    <div class="option-icon">⚙️</div>
+                    <div class="option-title">Custom Range</div>
+                    <div class="option-desc">Select specific pages</div>
+                </div>
+            </div>
+
+            <div class="file-list" id="png-files">
+                <div class="empty-state">
+                    <div class="empty-icon">📁</div>
+                    <p>No files selected yet</p>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="clear-btn" id="png-clear">
+                    <span>🗑️</span>
+                    Clear All
+                </button>
+                <button class="btn convert-btn" id="png-convert">
+                    <span class="convert-spinner spinner"></span>
+                    Convert to PNG
+                </button>
+            </div>
+        </div>
+
+        <div class="tab-content" id="jpg-tab">
+            <div class="upload-card" id="jpg-upload">
+                <div class="upload-icon">📤</div>
+                <div class="upload-text"><strong>Drag & drop</strong> your PDF files here or</div>
+                <button class="btn">
+                    <span class="convert-spinner spinner"></span>
+                    Browse Files
+                </button>
+                <input type="file" class="file-input" id="jpg-input" accept=".pdf" multiple>
+            </div>
+
+            <div class="file-list" id="jpg-files">
+                <div class="empty-state">
+                    <div class="empty-icon">📁</div>
+                    <p>No files selected yet</p>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="clear-btn" id="jpg-clear">
+                    <span>🗑️</span>
+                    Clear All
+                </button>
+                <button class="btn convert-btn" id="jpg-convert">
+                    <span class="convert-spinner spinner"></span>
+                    Convert to JPG
+                </button>
+            </div>
+        </div>
+
+        <div class="tab-content" id="docx-tab">
+            <div class="upload-card" id="docx-upload">
+                <div class="upload-icon">📤</div>
+                <div class="upload-text"><strong>Drag & drop</strong> your PDF files here or</div>
+                <button class="btn">
+                    <span class="convert-spinner spinner"></span>
+                    Browse Files
+                </button>
+                <input type="file" class="file-input" id="docx-input" accept=".pdf" multiple>
+            </div>
+
+            <div class="file-list" id="docx-files">
+                <div class="empty-state">
+                    <div class="empty-icon">📁</div>
+                    <p>No files selected yet</p>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="clear-btn" id="docx-clear">
+                    <span>🗑️</span>
+                    Clear All
+                </button>
+                <button class="btn convert-btn" id="docx-convert">
+                    <span class="convert-spinner spinner"></span>
+                    Convert to Word
+                </button>
+            </div>
+        </div>
+
+        <div class="tab-content" id="txt-tab">
+            <div class="upload-card" id="txt-upload">
+                <div class="upload-icon">📤</div>
+                <div class="upload-text"><strong>Drag & drop</strong> your PDF files here or</div>
+                <button class="btn">
+                    <span class="convert-spinner spinner"></span>
+                    Browse Files
+                </button>
+                <input type="file" class="file-input" id="txt-input" accept=".pdf" multiple>
+            </div>
+
+            <div class="file-list" id="txt-files">
+                <div class="empty-state">
+                    <div class="empty-icon">📁</div>
+                    <p>No files selected yet</p>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="clear-btn" id="txt-clear">
+                    <span>🗑️</span>
+                    Clear All
+                </button>
+                <button class="btn convert-btn" id="txt-convert">
+                    <span class="convert-spinner spinner"></span>
+                    Convert to Text
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs and contents
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding content
+                    tab.classList.add('active');
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+
+            // Initialize all converters
+            initConverter('png', true);
+            initConverter('jpg');
+            initConverter('docx');
+            initConverter('txt');
+
+            // Initialize batch options for PNG
+            const optionCards = document.querySelectorAll('.option-card');
+            optionCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.option-card').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                });
+            });
+        });
+
+        function initConverter(type, hasOptions = false) {
+            const uploadArea = document.getElementById(`${type}-upload`);
+            const fileInput = document.getElementById(`${type}-input`);
+            const fileList = document.getElementById(`${type}-files`);
+            const convertBtn = document.getElementById(`${type}-convert`);
+            const clearBtn = document.getElementById(`${type}-clear`);
+            
+            let files = [];
+
+            // Handle file selection via button click
+            uploadArea.querySelector('.btn').addEventListener('click', (e) => {
+                e.preventDefault();
+                fileInput.click();
+            });
+
+            // Handle file input change
+            fileInput.addEventListener('change', (e) => {
+                handleFiles(e.target.files);
+                fileInput.value = ''; // Reset input to allow selecting same files again
+            });
+
+            // Handle drag and drop
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                handleFiles(e.dataTransfer.files);
+            });
+
+            // Handle clear button
+            clearBtn.addEventListener('click', () => {
+                files = [];
+                renderFileList();
+            });
+
+            // Handle convert button
+            convertBtn.addEventListener('click', () => {
+                if (files.length === 0) return;
+                
+                convertBtn.classList.add('converting');
+                convertBtn.disabled = true;
+                
+                // Get selected option for PNG
+                let conversionOption = 'single';
+                if (hasOptions) {
+                    const activeOption = document.querySelector('.option-card.active');
+                    if (activeOption) {
+                        conversionOption = activeOption.getAttribute('data-option');
+                    }
+                }
+                
+                // Simulate conversion for each file
+                files.forEach((file, index) => {
+                    simulateConversion(file, index, conversionOption);
+                });
+            });
+
+            function handleFiles(newFiles) {
+                for (let i = 0; i < newFiles.length; i++) {
+                    const file = newFiles[i];
+                    if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+                        files.push({
+                            id: Date.now() + i,
+                            file: file,
+                            name: file.name,
+                            size: formatFileSize(file.size),
+                            status: 'ready',
+                            progress: 0,
+                            converted: false
+                        });
+                    }
+                }
+                renderFileList();
+            }
+
+            function renderFileList() {
+                if (files.length === 0) {
+                    fileList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">📁</div>
+                            <p>No files selected yet</p>
+                        </div>
+                    `;
+                    convertBtn.disabled = true;
+                    return;
+                }
+                
+                fileList.innerHTML = '';
+                convertBtn.disabled = false;
+                
+                files.forEach((fileData, index) => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = `file-item ${fileData.status}`;
+                    fileItem.innerHTML = `
+                        <div class="file-icon">📄</div>
+                        <div class="file-info">
+                            <div class="file-name" title="${fileData.name}">${fileData.name}</div>
+                            <div class="file-size">${fileData.size}</div>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: ${fileData.progress}%"></div>
+                            </div>
+                        </div>
+                        <div class="file-status ${fileData.status}">${fileData.status}</div>
+                        <div class="file-actions">
+                            <button class="download-btn" data-id="${fileData.id}" style="display: ${fileData.converted ? 'flex' : 'none'}">
+                                <span>⬇️</span> Download
+                            </button>
+                            <button class="remove-btn" data-id="${fileData.id}">✕</button>
+                        </div>
+                    `;
+                    fileList.appendChild(fileItem);
+                });
+
+                // Add download button event listeners
+                document.querySelectorAll(`.download-btn[data-id]`).forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = parseInt(e.target.closest('.download-btn').getAttribute('data-id'));
+                        const fileData = files.find(f => f.id === id);
+                        if (fileData) {
+                            downloadConvertedFile(fileData, type);
+                        }
+                    });
+                });
+
+                // Add remove button event listeners
+                document.querySelectorAll(`.remove-btn[data-id]`).forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = parseInt(e.target.closest('.remove-btn').getAttribute('data-id'));
+                        files = files.filter(f => f.id !== id);
+                        renderFileList();
+                    });
+                });
+            }
+
+            function simulateConversion(fileData, index, option = 'single') {
+                return new Promise(resolve => {
+                    files[index].status = 'converting';
+                    files[index].progress = 0;
+                    renderFileList();
+                    
+                    // Simulate progress with different speeds based on option
+                    let speed = 10;
+                    if (option === 'merged') speed = 15;
+                    if (option === 'custom') speed = 5;
+                    
+                    const interval = setInterval(() => {
+                        files[index].progress += Math.floor(Math.random() * speed) + 5;
+                        if (files[index].progress >= 100) {
+                            files[index].progress = 100;
+                            files[index].status = 'completed';
+                            files[index].converted = true;
+                            clearInterval(interval);
+                            renderFileList();
+                            
+                            // Check if all files are done
+                            if (files.every(f => f.status === 'completed')) {
+                                convertBtn.classList.remove('converting');
+                                convertBtn.disabled = false;
+                                
+                                // Show success notification
+                                showNotification(`${files.length} files converted to ${type.toUpperCase()} successfully!`, 'success');
+                            }
+                            resolve();
+                        }
+                        renderFileList();
+                    }, 300);
+                });
+            }
+
+            function downloadConvertedFile(fileData, outputType) {
+                // In a real implementation, this would download the actual converted file
+                // For now, we'll simulate it with a dummy download
+                const option = outputType === 'png' ? 
+                    document.querySelector('.option-card.active')?.getAttribute('data-option') || 'single' : 
+                    'default';
+                
+                let content = `Simulated ${outputType.toUpperCase()} content for ${fileData.name}`;
+                if (option === 'merged') content += ' (All pages merged)';
+                if (option === 'custom') content += ' (Custom page range)';
+                
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${fileData.name.replace('.pdf', '')}_converted.${outputType}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                // Show download notification
+                showNotification(`Downloading ${fileData.name.replace('.pdf', '')}.${outputType}`, 'info');
+            }
+
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            function showNotification(message, type = 'info') {
+                // In a real app, you would implement a proper notification system
+                console.log(`[${type.toUpperCase()}] ${message}`);
+            }
+        }
+    </script>
+</body>
+</html>

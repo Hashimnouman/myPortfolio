@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Design Portfolio | Showcase</title>
+    <link rel="shortcut icon" href="Hashim Nouman New Logo in Square.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --card-bg: #ffffff;
+            --header-bg: rgba(255, 255, 255, 0.98);
+            --footer-bg: #1a1d28;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.18);
+            --transition: all 0.3s ease;
+            --border-radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            padding-top: 80px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--header-bg);
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 0;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .logo-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            font-size: 1.05rem;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: var(--transition);
+            border-radius: 3px;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .active {
+            color: var(--primary);
+        }
+
+        .active::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 5rem 0 3.5rem;
+        }
+
+        .hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3.2rem;
+            margin-bottom: 1.2rem;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            animation: fadeInUp 0.8s ease;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease;
+            line-height: 1.8;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            padding: 3rem 0 5rem;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            animation: fadeIn 1s ease;
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .project-card:hover {
+            transform: translateY(-12px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .project-image {
+            height: 240px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            position: relative;
+            padding: 2rem;
+        }
+
+        .project-image img {
+            max-width: 160px;
+            max-height: 160px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            transition: var(--transition);
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.18);
+        }
+
+        .project-content {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--dark);
+            text-align: center;
+        }
+
+        .project-description {
+            color: var(--gray);
+            margin-bottom: 1.8rem;
+            flex-grow: 1;
+            text-align: center;
+            line-height: 1.7;
+        }
+
+        .project-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            color: var(--dark);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .project-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 14px rgba(67, 97, 238, 0.3);
+        }
+
+        .project-link:hover::before {
+            opacity: 1;
+        }
+
+        .project-link i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-link:hover i {
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--footer-bg);
+            color: white;
+            padding: 5rem 0 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-column h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+
+        .footer-column p {
+            margin-bottom: 1.5rem;
+            color: #cbd5e1;
+            line-height: 1.8;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.9rem;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 1.05rem;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            gap: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.8rem;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 14px rgba(67, 97, 238, 0.4);
+        }
+
+        .social-link:hover::before {
+            opacity: 1;
+        }
+
+        .social-link i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 1rem 0;
+            }
+            
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--header-bg);
+                flex-direction: column;
+                padding: 1.5rem 0;
+                box-shadow: var(--shadow);
+                text-align: center;
+                gap: 1.5rem;
+            }
+            
+            nav ul.active {
+                display: flex;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+                padding: 0 1rem;
+            }
+
+            .project-image {
+                height: 220px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .project-card {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            
+            .hero {
+                padding: 3.5rem 0 2.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .project-image {
+                height: 200px;
+                padding: 1.5rem;
+            }
+
+            .project-image img {
+                max-width: 140px;
+                max-height: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <div class="logo-img">
+                        <!-- Replace with your actual logo.jpg -->
+                        <img src="Hashim Nouman New Logo in Square.jpg" alt="Logo">
+                    </div>
+                    Hashim<span>Nouman</span>
+                </a>
+                <div class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <nav>
+                    <ul id="navMenu">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html">About</a></li>
+                        <li><a href="project.html" class="active">Projects</a></li>
+                        <li><a href="index.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>My Logo Designs</h1>
+            <p>A curated collection of branding and identity projects crafted with precision, creativity, and strategic thinking.</p>
+        </div>
+    </section>
+
+    <!-- Projects Grid -->
+    <main class="container">
+        <div class="projects-grid">
+            <!-- Project 1 -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="logo 1.png" alt="Nexus Labs Logo">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">UnitechPK</h3>
+                    <p class="project-description">Tech startup specializing in AI solutions. Modern, geometric design representing connectivity and innovation.</p>
+                    <div class="project-links">
+                        <a href="#" class="project-link" aria-label="Website"><i class="fas fa-globe"></i></a>
+                        <a href="#" class="project-link" aria-label="Behance"><i class="fab fa-behance"></i></a>
+                        <a href="#" class="project-link" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="logo2.png" alt=" Logo">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Awami Super Store</h3>
+                    <p class="project-description">Organic coffee shop chain. Natural, earthy design with leaf motif and warm colors to evoke sustainability.</p>
+                    <div class="project-links">
+                        <a href="#" class="project-link" aria-label="Website"><i class="fas fa-globe"></i></a>
+                        <a href="#" class="project-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="project-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="logo3.png" alt="Vivid Arts Logo">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">NEBOSH 360</h3>
+                    <p class="project-description">Contemporary art gallery. Abstract design with brush stroke elements and vibrant colors to express creativity.</p>
+                    <div class="project-links">
+                        <a href="http://nebosh360.com/" class="project-link" aria-label="Website"><i class="fas fa-globe"></i></a>
+                        <a href="#" class="project-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="project-link" aria-label="Behance"><i class="fab fa-behance"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="logo4.jpg" alt="AquaPure Logo">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Dubai Pickup Truck</h3>
+                    <p class="project-description">Sustainable water filtration company. Clean, fluid design with water droplet motif to represent purity.</p>
+                    <div class="project-links">
+                        <a href="https://dubaipickuptruck.com/" class="project-link" aria-label="Website"><i class="fas fa-globe"></i></a>
+                        <a href="#" class="project-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="project-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 5 -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="logo5.jpg" alt="Summit Brands Logo">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Madain Furniture</h3>
+                    <p class="project-description">Outdoor adventure gear company. Bold, mountain-inspired design with strong typography for a rugged feel.</p>
+                    <div class="project-links">
+                        <a href="#" class="project-link" aria-label="Website"><i class="fas fa-globe"></i></a>
+                        <a href="#" class="project-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="project-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+             <!-- Project 6 -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="Hashim Nouman New Logo in Square.jpg" alt="Summit Brands Logo">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Hashim Nouman</h3>
+                    <p class="project-description">Outdoor adventure gear company. Bold, mountain-inspired design with strong typography for a rugged feel.</p>
+                    <div class="project-links">
+                        <a href="#" class="project-link" aria-label="Website"><i class="fas fa-globe"></i></a>
+                        <a href="#" class="project-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="project-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Project 6 -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="logo7.jpg" alt="Summit Brands Logo">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">chiller truck rental</h3>
+                    <p class="project-description">Outdoor adventure gear company. Bold, mountain-inspired design with strong typography for a rugged feel.</p>
+                    <div class="project-links">
+                        <a href="#" class="project-link" aria-label="Website"><i class="fas fa-globe"></i></a>
+                        <a href="#" class="project-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="project-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 7 -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="logo6.jpg" alt="FreshFare Logo">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">MindGigspk</h3>
+                    <p class="project-description">Farm-to-table restaurant. Organic, handcrafted design with culinary elements to emphasize freshness.</p>
+                    <div class="project-links">
+                        <a href="#" class="project-link" aria-label="Website"><i class="fas fa-globe"></i></a>
+                        <a href="#" class="project-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="project-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About Me</h3>
+                    <p>I'm a passionate logo designer and brand identity specialist with over 7 years of experience creating memorable visual identities for businesses worldwide.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Behance"><i class="fab fa-behance"></i></a>
+                        <a href="#" class="social-link" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> About</a></li>
+                        <li><a href="project.html"><i class="fas fa-chevron-right"></i> Projects</a></li>
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Info</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> Sabir Abad, Karak, Kpk, Pashawer</a></li>
+                        <li><a href="mailto:hashimnouman182@gmIL.COM"><i class="fas fa-envelope"></i> hashimnouman182@gmail.com</a></li>
+                        <li><a href="tel:+923361963347"><i class="fas fa-phone"></i> +92 336 1963347</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 DesignLab. All rights reserved. Created with passion and attention to detail.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.getElementById('menuToggle');
+            
+            if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
+
+        // Animation for project cards when they come into view
+        document.addEventListener('DOMContentLoaded', function() {
+            const projectCards = document.querySelectorAll('.project-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            projectCards.forEach(card => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

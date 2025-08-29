@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wi-Fi QR Code Generator</title>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --white: #ffffff;
+            --dark: #212529;
+            --gray: #6c757d;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f0f2f5;
+            color: var(--dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 420px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-download {
+            background-color: #2ecc71;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .btn-download:hover {
+            background-color: #27ae60;
+        }
+
+        /* QR Code Container */
+        .qr-container {
+            display: none;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            margin: 0 auto;
+            padding: 1rem;
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .credentials {
+            background: var(--light);
+            border-radius: var(--border-radius);
+            padding: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .credential {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .credential:last-child {
+            margin-bottom: 0;
+        }
+
+        .credential-label {
+            font-weight: 600;
+            color: var(--gray);
+        }
+
+        .credential-value {
+            font-weight: 500;
+            color: var(--dark);
+            text-align: right;
+            max-width: 60%;
+            word-break: break-word;
+        }
+
+        /* Download Template (hidden) */
+        #downloadTemplate {
+            position: absolute;
+            left: -9999px;
+            width: 300px;
+            background: var(--white);
+            padding: 2rem;
+            text-align: center;
+            border-radius: var(--border-radius);
+        }
+
+        #templateQrcode {
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .template-credential {
+            margin: 1rem 0;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .template-credential strong {
+            font-weight: 600;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <h1>Wi-Fi QR Code Generator</h1>
+            <p>Create shareable QR codes for your Wi-Fi network</p>
+        </div>
+        
+        <div class="form-group">
+            <label for="ssid">Wi-Fi Name (SSID)</label>
+            <input type="text" id="ssid" placeholder="e.g., MyHomeWiFi">
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="text" id="password" placeholder="Your Wi-Fi password">
+        </div>
+        
+        <div class="form-group">
+            <label for="encryption">Security Type</label>
+            <select id="encryption">
+                <option value="WPA">WPA/WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">Open (No Password)</option>
+            </select>
+        </div>
+        
+        <button id="generateBtn" class="btn">Generate QR Code</button>
+        
+        <div class="qr-container" id="qrContainer">
+            <div id="qrcode"></div>
+            
+            <div class="credentials">
+                <div class="credential">
+                    <span class="credential-label">Network:</span>
+                    <span class="credential-value" id="displaySsid"></span>
+                </div>
+                <div class="credential">
+                    <span class="credential-label">Password:</span>
+                    <span class="credential-value" id="displayPassword"></span>
+                </div>
+                <div class="credential">
+                    <span class="credential-label">Security:</span>
+                    <span class="credential-value" id="displayEncryption"></span>
+                </div>
+            </div>
+            
+            <button id="downloadBtn" class="btn btn-download">Download QR Code</button>
+        </div>
+    </div>
+
+    <!-- Hidden template for download image -->
+    <div id="downloadTemplate">
+        <div id="templateQrcode"></div>
+        <div class="template-credential"><strong>Network:</strong> <span id="templateSsid"></span></div>
+        <div class="template-credential"><strong>Password:</strong> <span id="templatePassword"></span></div>
+        <div class="template-credential"><strong>Security:</strong> <span id="templateEncryption"></span></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateBtn = document.getElementById('generateBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const qrContainer = document.getElementById('qrContainer');
+            const qrcodeDiv = document.getElementById('qrcode');
+            
+            generateBtn.addEventListener('click', generateQRCode);
+            downloadBtn.addEventListener('click', downloadQRCode);
+            
+            function generateQRCode() {
+                const ssid = document.getElementById('ssid').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const encryption = document.getElementById('encryption').value;
+                
+                if (!ssid) {
+                    alert('Please enter your Wi-Fi network name');
+                    return;
+                }
+                
+                if (encryption !== 'nopass' && !password) {
+                    alert('Please enter a password for secured networks');
+                    return;
+                }
+                
+                // Clear previous QR codes
+                qrcodeDiv.innerHTML = '';
+                document.getElementById('templateQrcode').innerHTML = '';
+                
+                // Generate Wi-Fi connection string
+                let wifiString = `WIFI:T:${encryption};S:${ssid};`;
+                if (encryption !== 'nopass') wifiString += `P:${password};`;
+                wifiString += ';';
+                
+                // Generate QR code for display
+                new QRCode(qrcodeDiv, {
+                    text: wifiString,
+                    width: 200,
+                    height: 200,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+
+                // Generate QR code for download template
+                new QRCode(document.getElementById('templateQrcode'), {
+                    text: wifiString,
+                    width: 200,
+                    height: 200,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                
+                // Update display credentials
+                document.getElementById('displaySsid').textContent = ssid;
+                document.getElementById('displayPassword').textContent = 
+                    encryption === 'nopass' ? 'None (Open Network)' : password;
+                document.getElementById('displayEncryption').textContent = 
+                    encryption === 'nopass' ? 'Open' : 
+                    encryption === 'WPA' ? 'WPA/WPA2' : 'WEP';
+
+                // Update template credentials
+                document.getElementById('templateSsid').textContent = ssid;
+                document.getElementById('templatePassword').textContent = 
+                    encryption === 'nopass' ? 'None (Open Network)' : password;
+                document.getElementById('templateEncryption').textContent = 
+                    encryption === 'nopass' ? 'Open' : 
+                    encryption === 'WPA' ? 'WPA/WPA2' : 'WEP';
+                
+                // Show QR container and download button
+                qrContainer.style.display = 'block';
+                downloadBtn.style.display = 'block';
+                
+                // Smooth scroll to QR code
+                qrContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            function downloadQRCode() {
+                const element = document.getElementById('downloadTemplate');
+                
+                // Add slight delay to ensure QR code is rendered
+                setTimeout(() => {
+                    html2canvas(element, {
+                        backgroundColor: '#ffffff',
+                        scale: 2,
+                        logging: false,
+                        useCORS: true,
+                        windowWidth: element.scrollWidth,
+                        windowHeight: element.scrollHeight
+                    }).then(canvas => {
+                        const link = document.createElement('a');
+                        link.download = `WiFi_${document.getElementById('ssid').value.trim()}.png`;
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                    });
+                }, 300);
+            }
+        });
+    </script>
+</body>
+</html>
