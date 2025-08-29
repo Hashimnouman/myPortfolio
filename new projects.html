@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Portfolio | My Latest Projects</title>
+    <link rel="shortcut icon" href="Hashim Nouman New Logo in Square.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            padding: 40px 0;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+            z-index: -1;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            border-radius: 50px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn:hover {
+            background: rgba(99, 102, 241, 0.3);
+            color: #e0e7ff;
+            border-color: rgba(165, 180, 252, 0.3);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            color: #94a3b8;
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Section Title Animation */
+        .section-title {
+            text-align: center;
+            margin: 60px 0 40px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 5px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+            border-radius: 3px;
+        }
+
+        /* Filter Buttons */
+        .filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 40px 0;
+        }
+
+        .filter-btn {
+            padding: 14px 28px;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+            color: #e0e7ff;
+            border-color: rgba(165, 180, 252, 0.3);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            color: white;
+            border-color: rgba(165, 180, 252, 0.5);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .project-card {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+            height: 320px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            padding: 2px;
+            background: linear-gradient(45deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .project-img {
+            transform: scale(1.08);
+        }
+
+        .project-info {
+            padding: 25px;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f1f5f9;
+        }
+
+        .project-category {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            margin-bottom: 15px;
+        }
+
+        .project-description {
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.95), transparent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .view-project {
+            color: white;
+            font-weight: 500;
+            padding: 14px 28px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .project-card:hover .view-project {
+            transform: translateY(0);
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.98);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            color: #a78bfa;
+        }
+
+        .lightbox-caption {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.3rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 0;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .social-links a {
+            color: #94a3b8;
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-links a:hover {
+            color: #a78bfa;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .copyright {
+            color: #64748b;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .projects-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+            
+            .section-title h2 {
+                font-size: 2.5rem;
+            }
+            
+            .filter-btn {
+                padding: 12px 24px;
+                font-size: 0.9rem;
+            }
+
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .back-btn {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 20px;
+            }
+            
+            header {
+                padding-top: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+            
+            .filter-btn {
+                padding: 10px 20px;
+                font-size: 0.8rem;
+            }
+            
+            .logo {
+                font-size: 2.2rem;
+            }
+
+            .social-links a {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+
+        /* Decorative elements */
+        .decoration {
+            position: fixed;
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(60px);
+        }
+
+        .decoration-1 {
+            width: 500px;
+            height: 500px;
+            background: #6366f1;
+            top: -200px;
+            left: -200px;
+        }
+
+        .decoration-2 {
+            width: 400px;
+            height: 400px;
+            background: #8b5cf6;
+            bottom: -200px;
+            right: -200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+
+    <div class="container">
+        <header>
+            <a href="project.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to Project
+            </a>
+            <div class="logo">DesignPortfolio</div>
+            <p class="tagline">Showcasing Creative Excellence in Graphic Design</p>
+        </header>
+
+        <main>
+            <section class="section-title">
+                <h2>My Latest Projects</h2>
+            </section>
+
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="posters">Posters</button>
+                <button class="filter-btn" data-filter="banners">Banners</button>
+                <button class="filter-btn" data-filter="flex">Flex</button>
+                <button class="filter-btn" data-filter="others">Others</button>
+            </div>
+
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-card animate-fadeIn delay-1" data-category="posters">
+                    <img src="LP 1.jpg" alt="Education Learning Program" class="project-img">
+                    <div class="project-info">
+                        <h3 class="project-title">Education Learning Program</h3>
+                        <p class="project-category">Banner Design</p>
+                        <p class="project-description">A vibrant poster design for an electronic music festival with neon aesthetics and modern typography.</p>
+                    </div>
+                    <div class="project-overlay"> 
+                        <a href="LP 1.jpg" class="view-project">View Project</a>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card animate-fadeIn delay-2" data-category="banners">
+                    <img src="LP 2.jpg" alt="Education Learning Program" class="project-img">
+                    <div class="project-info">
+                        <h3 class="project-title">Education Learning Program</h3>
+                        <p class="project-category">Banner Design</p>
+                        <p class="project-description">E-commerce banner design featuring summer products with a fresh, colorful theme and clear call-to-action.</p>
+                    </div>
+                    <div class="project-overlay">
+                        <a href="LP 2.jpg" class="view-project">View Project</a>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card animate-fadeIn delay-3" data-category="flex">
+                    <img src="LP 3.jpg" alt="Education Learning Program" class="project-img">
+                    <div class="project-info">
+                        <h3 class="project-title">Education Learning Program</h3>
+                        <p class="project-category">Banner Design</p>
+                        <p class="project-description">Complete brand identity package including logo, color palette, typography, and brand guidelines.</p>
+                    </div>
+                    <div class="project-overlay">
+                        <a href="LP 3.jpg" class="view-project">View Project</a>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card animate-fadeIn delay-4" data-category="posters">
+                    <img src="LP 4.jpg" alt="Education Learning Program" class="project-img">
+                    <div class="project-info">
+                        <h3 class="project-title">Education Learning Program</h3>
+                        <p class="project-category">Poster Design</p>
+                        <p class="project-description">Minimalist poster design for a contemporary art exhibition with elegant typography and subtle gradients.</p>
+                    </div>
+                    <div class="project-overlay">
+                        <a href="LP 4.jpg" class="view-project">View Project</a>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="project-card animate-fadeIn delay-1" data-category="others">
+                    <img src="https://images.unsplash.com/photo-1634942536746-46b9a6de9231?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Business Card Design" class="project-img">
+                    <div class="project-info">
+                        <h3 class="project-title">Business Card Design</h3>
+                        <p class="project-category">Other</p>
+                        <p class="project-description">Modern business card design with unique die-cut shape, premium finish, and minimalist aesthetic.</p>
+                    </div>
+                    <div class="project-overlay">
+                        <a href="#" class="view-project">View Project</a>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div class="project-card animate-fadeIn delay-2" data-category="banners">
+                    <img src="https://images.unsplash.com/photo-1609921212029-bb5a28e60960?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Product Launch Banner" class="project-img">
+                    <div class="project-info">
+                        <h3 class="project-title">Product Launch Banner</h3>
+                        <p class="project-category">Banner Design</p>
+                        <p class="project-description">Digital banner series for a tech product launch, featuring sleek design and product-focused visuals.</p>
+                    </div>
+                    <div class="project-overlay">
+                        <a href="#" class="view-project">View Project</a>
+                    </div>
+                </div>
+
+                <!-- Project 7 -->
+                <div class="project-card animate-fadeIn delay-3" data-category="flex">
+                    <img src="https://images.unsplash.com/photo-1611532736597-8b8f4c1c5c3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Packaging Design" class="project-img">
+                    <div class="project-info">
+                        <h3 class="project-title">Packaging Design</h3>
+                        <p class="project-category">Flex Design</p>
+                        <p class="project-description">Innovative packaging design that combines functionality with aesthetic appeal for a premium product line.</p>
+                    </div>
+                    <div class="project-overlay">
+                        <a href="#" class="view-project">View Project</a>
+                    </div>
+                </div>
+
+                <!-- Project 8 -->
+                <div class="project-card animate-fadeIn delay-4" data-category="others">
+                    <img src="https://images.unsplash.com/photo-1586232702178-f044c5f4d4b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Logo Design" class="project-img">
+                    <div class="project-info">
+                        <h3 class="project-title">Logo Design</h3>
+                        <p class="project-category">Other</p>
+                        <p class="project-description">Modern logo design with clean lines and meaningful symbolism that represents the brand's core values.</p>
+                    </div>
+                    <div class="project-overlay">
+                        <a href="#" class="view-project">View Project</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Lightbox -->
+        <div class="lightbox">
+            <div class="lightbox-content">
+                <span class="lightbox-close">&times;</span>
+                <img src="" alt="" class="lightbox-img">
+                <div class="lightbox-caption"></div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.facebook.com/hashim.nouman.20250"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/hashimnouman182/"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/hashim-nouman/"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <p class="copyright">© 2023 Design Portfolio. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Add scroll animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.animate-fadeIn');
+            
+            // Initially hide elements for animation
+            animatedElements.forEach(element => {
+                element.style.opacity = '0';
+            });
+            
+            // Animate elements into view
+            setTimeout(() => {
+                animatedElements.forEach((element, index) => {
+                    setTimeout(() => {
+                        element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                        element.style.opacity = '1';
+                    }, 150 * index);
+                });
+            }, 300);
+            
+            // Filter functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const projectCards = document.querySelectorAll('.project-card');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    
+                    const filterValue = button.getAttribute('data-filter');
+                    
+                    projectCards.forEach(card => {
+                        if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                            card.style.display = 'block';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }, 50);
+                        } else {
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(20px)';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+            
+            // Lightbox functionality
+            const lightbox = document.querySelector('.lightbox');
+            const lightboxImg = document.querySelector('.lightbox-img');
+            const lightboxCaption = document.querySelector('.lightbox-caption');
+            const lightboxClose = document.querySelector('.lightbox-close');
+            const viewProjectButtons = document.querySelectorAll('.view-project');
+            
+            viewProjectButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const projectCard = button.closest('.project-card');
+                    const imgSrc = projectCard.querySelector('.project-img').src;
+                    const title = projectCard.querySelector('.project-title').textContent;
+                    const category = projectCard.querySelector('.project-category').textContent;
+                    
+                    lightboxImg.src = imgSrc;
+                    lightboxCaption.textContent = `${title} - ${category}`;
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            lightboxClose.addEventListener('click', () => {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    lightbox.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
